@@ -2,44 +2,21 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class User extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    protected $table = 'usuarios'; // Nombre de la tabla en la base de datos
+    protected $primaryKey = 'id_usuario'; // Clave primaria de la tabla
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    // Especificar qué columnas se pueden llenar (por ejemplo, durante la creación o actualización de registros).
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'id_tipo_usuario', 'usuario', 'clave', 'estado_usuario', 'observacion', 'foto_nombre'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
+    // Definir las relaciones con otros modelos si las tienes, por ejemplo, la relación con 'tipos_usuarios'.
+    public function tipoUsuario()
+    {
+        return $this->belongsTo(TipoUsuario::class, 'id_tipo_usuario');
+    }
 }
